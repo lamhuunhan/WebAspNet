@@ -1,0 +1,614 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="smartshopaspmvc5Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="binhluans">
+          <Key>
+            <PropertyRef Name="MaBinhLuan" />
+          </Key>
+          <Property Name="MaBinhLuan" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenDangNhap" Type="varchar" MaxLength="255" />
+          <Property Name="MaSanPham" Type="int" />
+          <Property Name="NgayBinhLuan" Type="datetime" />
+          <Property Name="NoiDungBinhLuan" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ct_dondat">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaDonDat" Type="int" Nullable="false" />
+          <Property Name="MaSanPham" Type="int" Nullable="false" />
+          <Property Name="SoLuong" Type="int" />
+        </EntityType>
+        <EntityType Name="danhgias">
+          <Key>
+            <PropertyRef Name="MaSanPham" />
+            <PropertyRef Name="TenDangNhap" />
+          </Key>
+          <Property Name="MaSanPham" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenDangNhap" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="NoiDung" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="dondats">
+          <Key>
+            <PropertyRef Name="MaDonDat" />
+          </Key>
+          <Property Name="MaDonDat" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenDangNhap" Type="varchar" MaxLength="255" />
+          <Property Name="TrangThai" Type="nvarchar" MaxLength="50" />
+          <Property Name="NoiGiao" Type="nvarchar(max)" />
+          <Property Name="NgayDat" Type="datetime" />
+        </EntityType>
+        <EntityType Name="loaisps">
+          <Key>
+            <PropertyRef Name="MaLoaiSP" />
+          </Key>
+          <Property Name="MaLoaiSP" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenLoai" Type="nvarchar" MaxLength="50" />
+          <Property Name="Mota" Type="nvarchar" MaxLength="50" />
+          <Property Name="Url" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="nhanviens">
+          <Key>
+            <PropertyRef Name="MaNhanVien" />
+          </Key>
+          <Property Name="MaNhanVien" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="200" />
+          <Property Name="TenDangNhap" Type="varchar" MaxLength="255" />
+          <Property Name="MatKhau" Type="varchar" MaxLength="50" />
+          <Property Name="NgaySinh" Type="datetime" />
+          <Property Name="GioiTinh" Type="nvarchar" MaxLength="50" />
+          <Property Name="DienThoai" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sanphams">
+          <Key>
+            <PropertyRef Name="MaSanPham" />
+          </Key>
+          <Property Name="MaSanPham" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenSanPham" Type="nvarchar" MaxLength="500" />
+          <Property Name="TenSanPham_KhongDau" Type="nvarchar" MaxLength="500" />
+          <Property Name="SoLuong" Type="int" />
+          <Property Name="HinhAnh1" Type="nvarchar" MaxLength="500" />
+          <Property Name="HinhAnh2" Type="nvarchar" MaxLength="500" />
+          <Property Name="HinhAnh3" Type="nvarchar" MaxLength="500" />
+          <Property Name="HinhAnh4" Type="nvarchar" MaxLength="500" />
+          <Property Name="DonGia" Type="decimal" Precision="10" Scale="0" />
+          <Property Name="ThongTin" Type="nvarchar(max)" />
+          <Property Name="MaLoaiSP" Type="int" />
+          <Property Name="Man" Type="int" />
+          <Property Name="Woman" Type="int" />
+        </EntityType>
+        <EntityType Name="thanhviens">
+          <Key>
+            <PropertyRef Name="TenDangNhap" />
+          </Key>
+          <Property Name="TenDangNhap" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="MatKhau" Type="varchar" MaxLength="50" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="500" />
+          <Property Name="NgaySinh" Type="datetime" />
+          <Property Name="GioiTinh" Type="nvarchar" MaxLength="50" />
+          <Property Name="DiaChi" Type="nvarchar" MaxLength="500" />
+          <Property Name="DienThoai" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="200" />
+          <Property Name="HinhAnh" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <Association Name="FK_binhluan_sanpham">
+          <End Role="sanphams" Type="Self.sanphams" Multiplicity="0..1" />
+          <End Role="binhluans" Type="Self.binhluans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sanphams">
+              <PropertyRef Name="MaSanPham" />
+            </Principal>
+            <Dependent Role="binhluans">
+              <PropertyRef Name="MaSanPham" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_binhluan_thanhvien">
+          <End Role="thanhviens" Type="Self.thanhviens" Multiplicity="0..1" />
+          <End Role="binhluans" Type="Self.binhluans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="thanhviens">
+              <PropertyRef Name="TenDangNhap" />
+            </Principal>
+            <Dependent Role="binhluans">
+              <PropertyRef Name="TenDangNhap" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ct_dondat_dondat">
+          <End Role="dondats" Type="Self.dondats" Multiplicity="1" />
+          <End Role="ct_dondat" Type="Self.ct_dondat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dondats">
+              <PropertyRef Name="MaDonDat" />
+            </Principal>
+            <Dependent Role="ct_dondat">
+              <PropertyRef Name="MaDonDat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ct_dondat_sanpham">
+          <End Role="sanphams" Type="Self.sanphams" Multiplicity="1" />
+          <End Role="ct_dondat" Type="Self.ct_dondat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sanphams">
+              <PropertyRef Name="MaSanPham" />
+            </Principal>
+            <Dependent Role="ct_dondat">
+              <PropertyRef Name="MaSanPham" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_danhgia_sanpham">
+          <End Role="sanphams" Type="Self.sanphams" Multiplicity="1" />
+          <End Role="danhgias" Type="Self.danhgias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sanphams">
+              <PropertyRef Name="MaSanPham" />
+            </Principal>
+            <Dependent Role="danhgias">
+              <PropertyRef Name="MaSanPham" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_danhgia_thanhvien">
+          <End Role="thanhviens" Type="Self.thanhviens" Multiplicity="1" />
+          <End Role="danhgias" Type="Self.danhgias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="thanhviens">
+              <PropertyRef Name="TenDangNhap" />
+            </Principal>
+            <Dependent Role="danhgias">
+              <PropertyRef Name="TenDangNhap" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dondat_thanhvien">
+          <End Role="thanhviens" Type="Self.thanhviens" Multiplicity="0..1" />
+          <End Role="dondats" Type="Self.dondats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="thanhviens">
+              <PropertyRef Name="TenDangNhap" />
+            </Principal>
+            <Dependent Role="dondats">
+              <PropertyRef Name="TenDangNhap" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sanpham_loaisp">
+          <End Role="loaisps" Type="Self.loaisps" Multiplicity="0..1" />
+          <End Role="sanphams" Type="Self.sanphams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="loaisps">
+              <PropertyRef Name="MaLoaiSP" />
+            </Principal>
+            <Dependent Role="sanphams">
+              <PropertyRef Name="MaLoaiSP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="smartshopaspmvc5ModelStoreContainer">
+          <EntitySet Name="binhluans" EntityType="Self.binhluans" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ct_dondat" EntityType="Self.ct_dondat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="danhgias" EntityType="Self.danhgias" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="dondats" EntityType="Self.dondats" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="loaisps" EntityType="Self.loaisps" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="nhanviens" EntityType="Self.nhanviens" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sanphams" EntityType="Self.sanphams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="thanhviens" EntityType="Self.thanhviens" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_binhluan_sanpham" Association="Self.FK_binhluan_sanpham">
+            <End Role="sanphams" EntitySet="sanphams" />
+            <End Role="binhluans" EntitySet="binhluans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_binhluan_thanhvien" Association="Self.FK_binhluan_thanhvien">
+            <End Role="thanhviens" EntitySet="thanhviens" />
+            <End Role="binhluans" EntitySet="binhluans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ct_dondat_dondat" Association="Self.FK_ct_dondat_dondat">
+            <End Role="dondats" EntitySet="dondats" />
+            <End Role="ct_dondat" EntitySet="ct_dondat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ct_dondat_sanpham" Association="Self.FK_ct_dondat_sanpham">
+            <End Role="sanphams" EntitySet="sanphams" />
+            <End Role="ct_dondat" EntitySet="ct_dondat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_danhgia_sanpham" Association="Self.FK_danhgia_sanpham">
+            <End Role="sanphams" EntitySet="sanphams" />
+            <End Role="danhgias" EntitySet="danhgias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_danhgia_thanhvien" Association="Self.FK_danhgia_thanhvien">
+            <End Role="thanhviens" EntitySet="thanhviens" />
+            <End Role="danhgias" EntitySet="danhgias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dondat_thanhvien" Association="Self.FK_dondat_thanhvien">
+            <End Role="thanhviens" EntitySet="thanhviens" />
+            <End Role="dondats" EntitySet="dondats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sanpham_loaisp" Association="Self.FK_sanpham_loaisp">
+            <End Role="loaisps" EntitySet="loaisps" />
+            <End Role="sanphams" EntitySet="sanphams" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="smartshopaspmvc5Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="binhluan">
+          <Key>
+            <PropertyRef Name="MaBinhLuan" />
+          </Key>
+          <Property Name="MaBinhLuan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenDangNhap" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MaSanPham" Type="Int32" />
+          <Property Name="NgayBinhLuan" Type="DateTime" Precision="3" />
+          <Property Name="NoiDungBinhLuan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="sanpham" Relationship="Self.FK_binhluan_sanpham" FromRole="binhluans" ToRole="sanphams" />
+          <NavigationProperty Name="thanhvien" Relationship="Self.FK_binhluan_thanhvien" FromRole="binhluans" ToRole="thanhviens" />
+        </EntityType>
+        <EntityType Name="ct_dondat">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaDonDat" Type="Int32" Nullable="false" />
+          <Property Name="MaSanPham" Type="Int32" Nullable="false" />
+          <Property Name="SoLuong" Type="Int32" />
+          <NavigationProperty Name="dondat" Relationship="Self.FK_ct_dondat_dondat" FromRole="ct_dondat" ToRole="dondats" />
+          <NavigationProperty Name="sanpham" Relationship="Self.FK_ct_dondat_sanpham" FromRole="ct_dondat" ToRole="sanphams" />
+        </EntityType>
+        <EntityType Name="danhgia">
+          <Key>
+            <PropertyRef Name="MaSanPham" />
+            <PropertyRef Name="TenDangNhap" />
+          </Key>
+          <Property Name="MaSanPham" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenDangNhap" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NoiDung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="sanpham" Relationship="Self.FK_danhgia_sanpham" FromRole="danhgias" ToRole="sanphams" />
+          <NavigationProperty Name="thanhvien" Relationship="Self.FK_danhgia_thanhvien" FromRole="danhgias" ToRole="thanhviens" />
+        </EntityType>
+        <EntityType Name="dondat">
+          <Key>
+            <PropertyRef Name="MaDonDat" />
+          </Key>
+          <Property Name="MaDonDat" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenDangNhap" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TrangThai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NoiGiao" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NgayDat" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ct_dondat" Relationship="Self.FK_ct_dondat_dondat" FromRole="dondats" ToRole="ct_dondat" />
+          <NavigationProperty Name="thanhvien" Relationship="Self.FK_dondat_thanhvien" FromRole="dondats" ToRole="thanhviens" />
+        </EntityType>
+        <EntityType Name="loaisp">
+          <Key>
+            <PropertyRef Name="MaLoaiSP" />
+          </Key>
+          <Property Name="MaLoaiSP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenLoai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mota" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Url" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="sanphams" Relationship="Self.FK_sanpham_loaisp" FromRole="loaisps" ToRole="sanphams" />
+        </EntityType>
+        <EntityType Name="nhanvien">
+          <Key>
+            <PropertyRef Name="MaNhanVien" />
+          </Key>
+          <Property Name="MaNhanVien" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HoTen" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TenDangNhap" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MatKhau" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NgaySinh" Type="DateTime" Precision="3" />
+          <Property Name="GioiTinh" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DienThoai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="sanpham">
+          <Key>
+            <PropertyRef Name="MaSanPham" />
+          </Key>
+          <Property Name="MaSanPham" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenSanPham" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TenSanPham_KhongDau" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SoLuong" Type="Int32" />
+          <Property Name="HinhAnh1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="HinhAnh2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="HinhAnh3" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="HinhAnh4" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DonGia" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="ThongTin" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MaLoaiSP" Type="Int32" />
+          <Property Name="Man" Type="Int32" />
+          <Property Name="Woman" Type="Int32" />
+          <NavigationProperty Name="binhluans" Relationship="Self.FK_binhluan_sanpham" FromRole="sanphams" ToRole="binhluans" />
+          <NavigationProperty Name="ct_dondat" Relationship="Self.FK_ct_dondat_sanpham" FromRole="sanphams" ToRole="ct_dondat" />
+          <NavigationProperty Name="danhgias" Relationship="Self.FK_danhgia_sanpham" FromRole="sanphams" ToRole="danhgias" />
+          <NavigationProperty Name="loaisp" Relationship="Self.FK_sanpham_loaisp" FromRole="sanphams" ToRole="loaisps" />
+        </EntityType>
+        <EntityType Name="thanhvien">
+          <Key>
+            <PropertyRef Name="TenDangNhap" />
+          </Key>
+          <Property Name="TenDangNhap" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MatKhau" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HoTen" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="NgaySinh" Type="DateTime" Precision="3" />
+          <Property Name="GioiTinh" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DiaChi" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DienThoai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="HinhAnh" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="binhluans" Relationship="Self.FK_binhluan_thanhvien" FromRole="thanhviens" ToRole="binhluans" />
+          <NavigationProperty Name="danhgias" Relationship="Self.FK_danhgia_thanhvien" FromRole="thanhviens" ToRole="danhgias" />
+          <NavigationProperty Name="dondats" Relationship="Self.FK_dondat_thanhvien" FromRole="thanhviens" ToRole="dondats" />
+        </EntityType>
+        <Association Name="FK_binhluan_sanpham">
+          <End Role="sanphams" Type="Self.sanpham" Multiplicity="0..1" />
+          <End Role="binhluans" Type="Self.binhluan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sanphams">
+              <PropertyRef Name="MaSanPham" />
+            </Principal>
+            <Dependent Role="binhluans">
+              <PropertyRef Name="MaSanPham" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_binhluan_thanhvien">
+          <End Role="thanhviens" Type="Self.thanhvien" Multiplicity="0..1" />
+          <End Role="binhluans" Type="Self.binhluan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="thanhviens">
+              <PropertyRef Name="TenDangNhap" />
+            </Principal>
+            <Dependent Role="binhluans">
+              <PropertyRef Name="TenDangNhap" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ct_dondat_dondat">
+          <End Role="dondats" Type="Self.dondat" Multiplicity="1" />
+          <End Role="ct_dondat" Type="Self.ct_dondat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dondats">
+              <PropertyRef Name="MaDonDat" />
+            </Principal>
+            <Dependent Role="ct_dondat">
+              <PropertyRef Name="MaDonDat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ct_dondat_sanpham">
+          <End Role="sanphams" Type="Self.sanpham" Multiplicity="1" />
+          <End Role="ct_dondat" Type="Self.ct_dondat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sanphams">
+              <PropertyRef Name="MaSanPham" />
+            </Principal>
+            <Dependent Role="ct_dondat">
+              <PropertyRef Name="MaSanPham" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_danhgia_sanpham">
+          <End Role="sanphams" Type="Self.sanpham" Multiplicity="1" />
+          <End Role="danhgias" Type="Self.danhgia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sanphams">
+              <PropertyRef Name="MaSanPham" />
+            </Principal>
+            <Dependent Role="danhgias">
+              <PropertyRef Name="MaSanPham" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_danhgia_thanhvien">
+          <End Role="thanhviens" Type="Self.thanhvien" Multiplicity="1" />
+          <End Role="danhgias" Type="Self.danhgia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="thanhviens">
+              <PropertyRef Name="TenDangNhap" />
+            </Principal>
+            <Dependent Role="danhgias">
+              <PropertyRef Name="TenDangNhap" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dondat_thanhvien">
+          <End Role="thanhviens" Type="Self.thanhvien" Multiplicity="0..1" />
+          <End Role="dondats" Type="Self.dondat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="thanhviens">
+              <PropertyRef Name="TenDangNhap" />
+            </Principal>
+            <Dependent Role="dondats">
+              <PropertyRef Name="TenDangNhap" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sanpham_loaisp">
+          <End Role="loaisps" Type="Self.loaisp" Multiplicity="0..1" />
+          <End Role="sanphams" Type="Self.sanpham" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="loaisps">
+              <PropertyRef Name="MaLoaiSP" />
+            </Principal>
+            <Dependent Role="sanphams">
+              <PropertyRef Name="MaLoaiSP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="smart_Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="binhluans" EntityType="Self.binhluan" />
+          <EntitySet Name="ct_dondat" EntityType="Self.ct_dondat" />
+          <EntitySet Name="danhgias" EntityType="Self.danhgia" />
+          <EntitySet Name="dondats" EntityType="Self.dondat" />
+          <EntitySet Name="loaisps" EntityType="Self.loaisp" />
+          <EntitySet Name="nhanviens" EntityType="Self.nhanvien" />
+          <EntitySet Name="sanphams" EntityType="Self.sanpham" />
+          <EntitySet Name="thanhviens" EntityType="Self.thanhvien" />
+          <AssociationSet Name="FK_binhluan_sanpham" Association="Self.FK_binhluan_sanpham">
+            <End Role="sanphams" EntitySet="sanphams" />
+            <End Role="binhluans" EntitySet="binhluans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_binhluan_thanhvien" Association="Self.FK_binhluan_thanhvien">
+            <End Role="thanhviens" EntitySet="thanhviens" />
+            <End Role="binhluans" EntitySet="binhluans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ct_dondat_dondat" Association="Self.FK_ct_dondat_dondat">
+            <End Role="dondats" EntitySet="dondats" />
+            <End Role="ct_dondat" EntitySet="ct_dondat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ct_dondat_sanpham" Association="Self.FK_ct_dondat_sanpham">
+            <End Role="sanphams" EntitySet="sanphams" />
+            <End Role="ct_dondat" EntitySet="ct_dondat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_danhgia_sanpham" Association="Self.FK_danhgia_sanpham">
+            <End Role="sanphams" EntitySet="sanphams" />
+            <End Role="danhgias" EntitySet="danhgias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_danhgia_thanhvien" Association="Self.FK_danhgia_thanhvien">
+            <End Role="thanhviens" EntitySet="thanhviens" />
+            <End Role="danhgias" EntitySet="danhgias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dondat_thanhvien" Association="Self.FK_dondat_thanhvien">
+            <End Role="thanhviens" EntitySet="thanhviens" />
+            <End Role="dondats" EntitySet="dondats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sanpham_loaisp" Association="Self.FK_sanpham_loaisp">
+            <End Role="loaisps" EntitySet="loaisps" />
+            <End Role="sanphams" EntitySet="sanphams" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="smartshopaspmvc5ModelStoreContainer" CdmEntityContainer="smart_Entities">
+          <EntitySetMapping Name="binhluans">
+            <EntityTypeMapping TypeName="smartshopaspmvc5Model.binhluan">
+              <MappingFragment StoreEntitySet="binhluans">
+                <ScalarProperty Name="MaBinhLuan" ColumnName="MaBinhLuan" />
+                <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
+                <ScalarProperty Name="MaSanPham" ColumnName="MaSanPham" />
+                <ScalarProperty Name="NgayBinhLuan" ColumnName="NgayBinhLuan" />
+                <ScalarProperty Name="NoiDungBinhLuan" ColumnName="NoiDungBinhLuan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ct_dondat">
+            <EntityTypeMapping TypeName="smartshopaspmvc5Model.ct_dondat">
+              <MappingFragment StoreEntitySet="ct_dondat">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="MaDonDat" ColumnName="MaDonDat" />
+                <ScalarProperty Name="MaSanPham" ColumnName="MaSanPham" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="danhgias">
+            <EntityTypeMapping TypeName="smartshopaspmvc5Model.danhgia">
+              <MappingFragment StoreEntitySet="danhgias">
+                <ScalarProperty Name="MaSanPham" ColumnName="MaSanPham" />
+                <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
+                <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dondats">
+            <EntityTypeMapping TypeName="smartshopaspmvc5Model.dondat">
+              <MappingFragment StoreEntitySet="dondats">
+                <ScalarProperty Name="MaDonDat" ColumnName="MaDonDat" />
+                <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="NoiGiao" ColumnName="NoiGiao" />
+                <ScalarProperty Name="NgayDat" ColumnName="NgayDat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="loaisps">
+            <EntityTypeMapping TypeName="smartshopaspmvc5Model.loaisp">
+              <MappingFragment StoreEntitySet="loaisps">
+                <ScalarProperty Name="MaLoaiSP" ColumnName="MaLoaiSP" />
+                <ScalarProperty Name="TenLoai" ColumnName="TenLoai" />
+                <ScalarProperty Name="Mota" ColumnName="Mota" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="nhanviens">
+            <EntityTypeMapping TypeName="smartshopaspmvc5Model.nhanvien">
+              <MappingFragment StoreEntitySet="nhanviens">
+                <ScalarProperty Name="MaNhanVien" ColumnName="MaNhanVien" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+                <ScalarProperty Name="DienThoai" ColumnName="DienThoai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sanphams">
+            <EntityTypeMapping TypeName="smartshopaspmvc5Model.sanpham">
+              <MappingFragment StoreEntitySet="sanphams">
+                <ScalarProperty Name="MaSanPham" ColumnName="MaSanPham" />
+                <ScalarProperty Name="TenSanPham" ColumnName="TenSanPham" />
+                <ScalarProperty Name="TenSanPham_KhongDau" ColumnName="TenSanPham_KhongDau" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="HinhAnh1" ColumnName="HinhAnh1" />
+                <ScalarProperty Name="HinhAnh2" ColumnName="HinhAnh2" />
+                <ScalarProperty Name="HinhAnh3" ColumnName="HinhAnh3" />
+                <ScalarProperty Name="HinhAnh4" ColumnName="HinhAnh4" />
+                <ScalarProperty Name="DonGia" ColumnName="DonGia" />
+                <ScalarProperty Name="ThongTin" ColumnName="ThongTin" />
+                <ScalarProperty Name="MaLoaiSP" ColumnName="MaLoaiSP" />
+                <ScalarProperty Name="Man" ColumnName="Man" />
+                <ScalarProperty Name="Woman" ColumnName="Woman" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="thanhviens">
+            <EntityTypeMapping TypeName="smartshopaspmvc5Model.thanhvien">
+              <MappingFragment StoreEntitySet="thanhviens">
+                <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+                <ScalarProperty Name="DienThoai" ColumnName="DienThoai" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="HinhAnh" ColumnName="HinhAnh" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

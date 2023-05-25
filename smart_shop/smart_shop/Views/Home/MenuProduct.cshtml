@@ -1,0 +1,33 @@
+﻿@using smart_shop.Models;
+@model IEnumerable<loaisp>
+
+<div class="col-md-4 products-left">
+    <div class="css-treeview">
+        <h4>Sản phẩm</h4>
+        <ul class="tree-list-pad">
+            <li>
+                <input type="checkbox" checked="checked" id="item-0" /><label for="item-0"><span></span>@Html.ActionLink("Men's", "Men", "Products", null, htmlAttributes: new { @style = "background-image: url() !important; padding: 0px;" })</label>
+                <ul>
+                    @foreach (var item in Model)
+                    {
+                        <li> @Html.ActionLink(item.TenLoai, "Men","Products", new { id = item.MaLoaiSP,categoryName=item.Url },null) </li>
+                    }
+
+                </ul>
+            </li>
+            <li>
+                <input type="checkbox" id="item-1" checked="checked" /><label for="item-1">@Html.ActionLink("Women's", "Men", "Products", null, htmlAttributes: new { @style = "background-image: url() !important; padding: 0px;" })</label>
+                <ul>
+                    @foreach (var item in Model)
+                    {
+                        <li> @Html.ActionLink(item.TenLoai, "Women", "Products", new { id = item.MaLoaiSP, categoryName = item.Url },null) </li>
+                    }
+
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+    <div class="clearfix"></div>
+</div>
+

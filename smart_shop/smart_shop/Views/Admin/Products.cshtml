@@ -1,0 +1,426 @@
+﻿@using smart_shop.Models
+@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<smart_shop.Models.sanpham>
+@{
+    ViewBag.Title = "Quản lý sản phẩm";
+    Layout = "~/Views/Layout/AdminLayout.cshtml";
+    int stt = 1;
+    stt = Model.PageSize * (Model.PageNumber - 1);
+    smart_shop.Models.sanpham sp = new smart_shop.Models.sanpham();
+}
+<style>
+    .product__search {
+        position: absolute;
+        right: -350px;
+        top: 84px;
+        width: 700px;
+    }
+</style>
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Admin")"><i class="fa fa-home"></i></a></li>
+    <li class="active">@ViewBag.Title</li>
+</ol>
+<div class="row product__search" style="margin:2em 0 2em 0">
+    <div class="col-sm-5" style="padding:0px">
+        @Html.TextBox("Search", null, htmlAttributes: new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-default" id="btnsearch">
+        <span class="glyphicon glyphicon-search"></span>
+    </button>
+    <script>
+        $(document).ready(function () {
+            $('#btnsearch').click(function () {
+                gtsearch = $('#Search').val();
+                $.ajax({
+                    type: 'Get',
+                    url: '@Url.Action("ProductsAjax", "Admin")',
+                    data: { Search: gtsearch },
+                    success: function (kq) {
+                        $('#listsanpham').html(kq);
+                    }
+                });
+            });
+        });
+    </script>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <p style="margin-bottom:1px">
+            <input type="button" class="btn btn-primary" aria-hidden="true" id="themsanpham" data-toggle="modal"
+                   data-target="#create_and_edit"
+                   data-id=""
+                   data-tensp=""
+                   data-soluong=""
+                   data-hinha1=""
+                   data-hinha2=""
+                   data-hinha3=""
+                   data-hinha4=""
+                   data-dongia=""
+                   data-thongtin=""
+                   data-man=""
+                   data-woman=""
+                   data-loaisp=""
+                   value="Tạo mới" />
+        </p>
+
+    </div>
+    <div class="panel-body">
+        <div id="listsanpham" style="overflow:auto">
+            <table class="table-striped table">
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        @Html.Label("Tên sản phẩm")
+                    </th>
+                    <th>
+                        @Html.Label("Số lượng")
+                    </th>
+                    <th>
+                        @Html.Label("Hình 1")
+                    </th>
+
+                    <th>
+                        @Html.Label("Đơn giá")
+                    </th>
+                    <th>
+                        @Html.Label("Thông tin")
+                    </th>
+                    <th>
+                        @Html.Label("M")
+                    </th>
+                    <th>
+                        @Html.Label("F")
+                    </th>
+                    <th>
+                        @Html.Label("Loại")
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+
+                            @{ stt++;}
+                            @stt
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TenSanPham)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SoLuong)
+                        </td>
+                        <td>
+                            <img src="@Url.Content("~/Content/images/"+@item.HinhAnh1)" alt="Alternate Text" width="60" height="68" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DonGia)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ThongTin)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Man)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Woman)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.loaisp.TenLoai)
+                        </td>
+                        <td>
+                            <span class="glyphicon glyphicon-edit edit_sanpham" style="cursor:pointer;color:#337ab7"
+                                  aria-hidden="true"
+                                  data-toggle="modal"
+                                  data-target="#create_and_edit"
+                                  data-id="@item.MaSanPham"
+                                  data-tensp="@item.TenSanPham"
+                                  data-soluong="@item.SoLuong"
+                                  data-hinha1="@item.HinhAnh1"
+                                  data-hinha2="@item.HinhAnh2"
+                                  data-hinha3="@item.HinhAnh3"
+                                  data-hinha4="@item.HinhAnh4"
+                                  data-dongia="@item.DonGia"
+                                  data-thongtin="@item.ThongTin"
+                                  data-man="@item.Man"
+                                  data-woman="@item.Woman"
+                                  data-loaisp="@item.loaisp.TenLoai"></span>
+                            <span class="glyphicon glyphicon-remove removesanpham" style="cursor:pointer;color:#337ab7"
+                                  aria-hidden="true"
+                                  data-toggle="modal"
+                                  data-target="#editsanpham"
+                                  data-id="@item.MaSanPham"
+                                  data-tensp="@item.TenSanPham"></span>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            <div class="row">
+                <div class="left row">
+                    Trang @{int st = Model.PageNumber > Model.PageCount ? 1 : Model.PageNumber; } @st/@Model.PageCount
+                </div>
+                <div class="left row">
+                    @Html.PagedListPager(Model, page => Url.Action("Products", new { page = page, @Search = ViewBag.Search }))
+                </div>
+            </div>
+        </div>
+        <p class="glyphicon glyphicon-"></p>
+    </div>
+</div>
+
+
+
+
+
+
+<script>
+    $(document).on("click", ".removesanpham", function () {
+        var idsanpham = $(this).data('id');
+        var tensp = $(this).data('tensp');
+
+        $(".modal-body #idsp").val(idsanpham);
+        $(".modal-body #tensanpham").val(tensp);
+        $('#editsanphamm').modal('show');
+    });
+</script>
+<script>
+    $(document).on("click", ".edit_sanpham", function () {
+
+        var MaSanPham = $(this).data('id');
+        var tensp = $(this).data('tensp');
+        var soLuong = $(this).data('soluong');
+        var HinhA1 = $(this).data('hinha1');
+        var HinhA2 = $(this).data('hinha2');
+        var HinhA3 = $(this).data('hinha3');
+        var HinhA4 = $(this).data('hinha4');
+        var DonGia = $(this).data('dongia');
+        var ThongTin = $(this).data('thongtin');
+        var Man = $(this).data('man');
+        var Woman = $(this).data('woman');
+        var LoaiSP = $(this).data('loaisp');
+        $(".modal-body #sp_MaSanPham").val(MaSanPham);
+        $(".modal-body #sp_TenSanPham").val(tensp);
+        $(".modal-body #sp_SoLuong").val(soLuong);
+        $(".modal-body #sp_DonGia").val(DonGia);
+        $(".modal-body #sp_hinh1").val(HinhA1);
+        //$(".modal-body #sp_MaLoaiSP").val(LoaiSP);
+        $(".modal-body #sp_Man").val(Man);
+        $(".modal-body #sp_Woman").val(Woman);
+        $(".modal-body #sp_ThongTin").val(ThongTin);
+        $(".modal-footer #EditSanPhamX").val("Cập nhập");
+        $(".modal-header #myModalLabel").html("Sửa sản phẩm");
+        $(".add-review #loianh").html(" ");
+        //themsanpham
+    });
+
+</script>
+<script>
+    $(document).on("click", "#themsanpham", function () {
+        var MaSanPham = $(this).data('id');
+        var tensp = $(this).data('tensp');
+        var soLuong = $(this).data('soluong');
+        var HinhA1 = $(this).data('hinha1');
+        var HinhA2 = $(this).data('hinha2');
+        var HinhA3 = $(this).data('hinha3');
+        var HinhA4 = $(this).data('hinha4');
+        var DonGia = $(this).data('dongia');
+        var ThongTin = $(this).data('thongtin');
+        var Man = $(this).data('man');
+        var Woman = $(this).data('woman');
+        var LoaiSP = $(this).data('loaisp');
+        $(".modal-body #sp_MaSanPham").val("0");
+        $(".modal-body #sp_TenSanPham").val(tensp);
+        $(".modal-body #sp_SoLuong").val(soLuong);
+        $(".modal-body #sp_DonGia").val(DonGia);
+
+        //$(".modal-body #sp_MaLoaiSP").val(LoaiSP);
+        $(".modal-body #sp_Man").val(Man);
+        $(".modal-body #sp_Woman").val(Woman);
+        $(".modal-body #sp_ThongTin").val(ThongTin);
+        $(".modal-footer #EditSanPham").val("Cập nhập");
+        $(".modal-header #myModalLabel").html("Sửa sản phẩm");
+
+        $(".modal-footer #EditSanPhamX").val("Thêm");
+        $(".modal-header #myModalLabel").html("Thêm sản phẩm");
+        //themsanpham
+    });
+</script>
+
+
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="editsanphamm">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel1">Xóa sản phẩm</h4>
+            </div>
+            @using (Html.BeginForm("DeleteAjax", "Admin", FormMethod.Post))
+            {
+
+                <div class="modal-body">
+                    <div class="add-review">
+
+                        <input type="hidden" id="idsp" name="id" class="form-control" />
+                        <br />
+                        <input type="text" id="tensanpham" disabled="disabled" class="form-control" />
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Thoát</button>
+                    <button type="submit" class="btn btn-primary" style="background-color:#FDA30E" id="EditSanPham">Xóa</button>
+                </div>
+            }
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#EditSanPham').click(function () {
+            maspm = $('#idsp').val();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteAjax", "Admin")' ,
+                data:{ id: maspm,
+                    page:@Model.PageNumber,
+                    Search:@ViewBag.Search
+                },
+                success: function (ketqua) {
+                    $('#listsanpham').html(ketqua);
+                    $('#editsanphamm').modal('hide');
+                }
+
+            });
+
+        });
+    });
+</script>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="create_and_edit">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="add-review">
+                @using (Html.BeginForm("Edit_CreateProduct", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "from-product" }))
+                {
+                    <input type="hidden" name="Search" value="@ViewBag.Search" /> <input type="hidden" name="page" value="@Model.PageNumber" />
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Sửa sản phẩm</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="add-review">
+
+                            <input type="hidden" value="@sp.MaSanPham" id="sp_MaSanPham" name="sp.MaSanPham" />
+                            <table class="table-striped table">
+
+                                <tr>
+                                    <td>@Html.LabelFor(model => sp.TenSanPham, htmlAttributes: new { @class = "control-label text-right col-sm-12" })</td>
+                                    <td>@Html.EditorFor(model => sp.TenSanPham, new { htmlAttributes = new { @class = "form-control" } })</td>
+                                    <td>@Html.LabelFor(model => sp.SoLuong, htmlAttributes: new { @class = "control-label text-right col-sm-12" })</td>
+                                    <td>@Html.EditorFor(model => sp.SoLuong, new { htmlAttributes = new { @class = "form-control" } })</td>
+                                </tr>
+                                <tr>
+                                    <td>@Html.LabelFor(model => sp.HinhAnh1, htmlAttributes: new { @class = "control-label text-right col-sm-12" })</td>
+
+                                    <td>
+                                        @*<input type="text" name="HA1" class="form-control" id="sp_hinh1" />*@
+                                        <input type="file" name="HA1" class="form-control" id="sp_hinh1" />
+
+                                    </td>
+                                    <td>@Html.LabelFor(model => sp.HinhAnh3, htmlAttributes: new { @class = "control-label text-right col-sm-12" })</td>
+                                    <td><input type="file" name="HA3" class="form-control" /></td>
+                                </tr>
+                                <tr>
+                                    <td>@Html.LabelFor(model => sp.HinhAnh2, htmlAttributes: new { @class = "control-label text-right col-sm-12" })</td>
+                                    <td><input type="file" name="HA2" class="form-control" /></td>
+                                    <td>@Html.LabelFor(model => sp.HinhAnh4, htmlAttributes: new { @class = "control-label text-right col-sm-12" })</td>
+                                    <td><input type="file" name="HA4" class="form-control" /></td>
+                                </tr>
+                                <tr>
+                                    <td>@Html.LabelFor(model => sp.DonGia, htmlAttributes: new { @class = "control-label text-right col-sm-12" })</td>
+                                    <td>@Html.EditorFor(model => sp.DonGia, new { htmlAttributes = new { @class = "form-control" } })</td>
+                                    <td>@Html.LabelFor(model => sp.MaLoaiSP, "Loại sản phẩm", htmlAttributes: new { @class = "control-label text-right col-sm-12" })</td>
+                                    <td>@Html.DropDownList("sp.MaLoaiSP", (SelectList)ViewBag.MaLoaiSP, htmlAttributes: new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label class="control-label text-right col-sm-12">
+                                            Giới tính
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" name="sp.Man">
+                                            <option value="1">Nam</option>
+                                            <option value="0">Nữ</option>
+                                        </select>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>@Html.LabelFor(model => sp.ThongTin, htmlAttributes: new { @class = "control-labe text-right col-sm-12" })</td>
+                                    <td colspan="3">@Html.EditorFor(model => sp.ThongTin, new { htmlAttributes = new { @class = "form-control" } })</td>
+                                </tr>
+
+                            </table>
+                            <p class="text-danger text-center" id="errorName"></p>
+                            <p class="text-danger text-center" id="errorQuantity"></p>
+                            <p class="text-danger text-center" id="loianh"></p>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        <input type="button" class="btn btn-primary editsanphamclick" id="EditSanPhamX" value="Cập nhật" />
+                    </div>
+                }
+                <script>
+                    $(document).ready(function () {
+                        var form = document.getElementById("from-product");
+
+                        $('.editsanphamclick').click(function () {
+                            //alert(document.getElementById("Hinh1").files.length);
+                            var image1 = document.getElementById("sp_hinh1");
+
+                            var error = 0;
+                            var codeProduct = $("#sp_TenSanPham").val();
+                            var quantity = $("#sp_SoLuong").val();
+                            if (quantity == '' || quantity == undefined) {
+                                error++;
+                                $('#errorQuantity').text('Số lượng sản phẩm bắt buộc nhập');
+                            }
+                            if (codeProduct == '' || codeProduct == undefined) {
+                                error++;
+                                $('#errorName').text('Tên sản phẩm bắt buộc nhập');
+                            }
+                            id = $('#sp_MaSanPham').val();
+                            if (id == "0") {
+                                if (image1.files.length == 0) {
+                                    error++;
+                                    $('#loianh').text('Lỗi không được để trống hình ảnh 1');
+                                }
+                            }
+
+                            if (error > 0)
+                                return false;
+                            else
+                                form.submit();
+                        });
+                    });
+
+                </script>
+            </div>
+        </div>
+    </div>
+</div>

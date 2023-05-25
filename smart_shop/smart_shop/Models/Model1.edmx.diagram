@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c053aeca0c014c20b5d97dcaa9d822b7" Name="Diagram1">
+        <EntityTypeShape EntityType="smartshopaspmvc5Model.binhluan" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="smartshopaspmvc5Model.ct_dondat" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="smartshopaspmvc5Model.danhgia" Width="1.5" PointX="5.25" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="smartshopaspmvc5Model.dondat" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="smartshopaspmvc5Model.loaisp" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="smartshopaspmvc5Model.nhanvien" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="smartshopaspmvc5Model.sanpham" Width="1.5" PointX="3" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="smartshopaspmvc5Model.thanhvien" Width="1.5" PointX="0.75" PointY="8.375" IsExpanded="true" />
+        <AssociationConnector Association="smartshopaspmvc5Model.FK_binhluan_sanpham" ManuallyRouted="false" />
+        <AssociationConnector Association="smartshopaspmvc5Model.FK_binhluan_thanhvien" ManuallyRouted="false" />
+        <AssociationConnector Association="smartshopaspmvc5Model.FK_ct_dondat_dondat" ManuallyRouted="false" />
+        <AssociationConnector Association="smartshopaspmvc5Model.FK_ct_dondat_sanpham" ManuallyRouted="false" />
+        <AssociationConnector Association="smartshopaspmvc5Model.FK_danhgia_sanpham" ManuallyRouted="false" />
+        <AssociationConnector Association="smartshopaspmvc5Model.FK_danhgia_thanhvien" ManuallyRouted="false" />
+        <AssociationConnector Association="smartshopaspmvc5Model.FK_dondat_thanhvien" ManuallyRouted="false" />
+        <AssociationConnector Association="smartshopaspmvc5Model.FK_sanpham_loaisp" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

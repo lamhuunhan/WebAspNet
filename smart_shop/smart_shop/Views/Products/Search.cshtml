@@ -1,0 +1,150 @@
+﻿@using smart_shop.Models;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<sanpham>
+@{
+    ViewBag.Title = ViewBag.q;
+    Layout = "~/Views/Layout/ProductLayout.cshtml";
+}
+
+
+<div class="container">
+    @Html.Action("MenuProduct", "Home")
+
+    <div class="col-md-8 products-right">
+        <h5>sản phẩm</h5>
+        @using (Html.BeginForm("Search", "Products", FormMethod.Get))
+        {
+            <div class="sort-grid">
+
+                <div class="sorting">
+                    <h6>Sắp xếp</h6>
+
+                    <select name="srt" onchange="this.form.submit();" class="frm-field required sect">
+                        @if (ViewBag.srt == "09")
+                        {
+                            <option value="09" selected="selected">Giá (Thấp - Cao)</option>
+                        }
+                        else
+                        {
+                            <option value="09">Giá (Thấp - Cao)</option>
+                        }
+                        @if (ViewBag.srt == "AZ")
+                        {
+                            <option value="AZ" selected="selected">Tên (A - Z)</option>
+                        }
+                        else
+                        {
+                            <option value="AZ">Tên (A - Z)</option>
+                        }
+                        @if (ViewBag.srt == "ZA")
+                        {
+                            <option value="ZA" selected="selected">Tên (Z - A)</option>
+                        }
+                        else
+                        {
+                            <option value="ZA">Tên (Z - A)</option>
+                        }
+                        @if (ViewBag.srt == "90")
+                        {
+                            <option value="90" selected="selected">Giá (Cao - Thấp)</option>
+                        }
+                        else
+                        {
+                            <option value="90">Giá (Cao - Thấp)</option>
+                        }
+
+
+                    </select>
+
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="sorting">
+                    <h6>Hiển thị</h6>
+
+                    @Html.DropDownList("sh", new SelectList(new List<int> { 12, 16, 20, 24, 28, 32, 36, 52 }), htmlAttributes: new { @class = "frm-field required sect", onchange = "this.form.submit();" })
+
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+        }
+        <div class="men-wear-top">
+            <script src="~/content/js/responsiveslides.min.js"></script>
+            <script>
+						// You can also use "$(window).load(function() {"
+						$(function () {
+						 // Slideshow 4
+						$("#slider3").responsiveSlides({
+                                    auto: true,
+							pager: true,
+							nav: false,
+							speed: 500,
+
+                            namespace: "callbacks",
+							before: function () {
+						$('.events').append("<li>before event fired.</li>");
+                        },
+						after: function () {
+							$('.events').append("<li>after event fired.</li>");
+                        }
+                        });
+						});
+            </script>
+            <div id="top" class="callbacks_container">
+                <ul class="rslides" id="slider3">
+                    <li>
+                        <img class="img-responsive" src="~/Content/images/men21.jpg" alt=" " />
+                    </li>
+                    <li>
+                        <img class="img-responsive" src="~/Content/images/men11.jpg" alt=" " />
+                    </li>
+                    <li>
+                        <img class="img-responsive" src="~/Content/images/new4.jpg" alt=" " />
+                    </li>
+                    <li>
+                        <img class="img-responsive" src="~/Content/images/men2.jpg" alt=" " />
+                    </li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="single-pro">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3 product-men yes-marg">
+                <div class="men-pro-item simpleCart_shelfItem">
+                    <div class="men-thumb-item">
+                        <img src="@Url.Content("~/Content/images/" + item.HinhAnh1)" alt="" class="pro-image-front">
+                        <img src="@Url.Content("~/Content/images/" + item.HinhAnh1)" alt="" class="pro-image-back">
+                        <div class="men-cart-pro">
+                            <div class="inner-men-cart-pro">
+                                <a href="@Url.Action("Single","Products", new {id=item.MaSanPham,TenSanPham_KhongDau=item.TenSanPham_KhongDau,categoryName=item.loaisp.Url})" class="link-product-add-cart">Xem chi tiết</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-info-product ">
+                        <h4><a href="@Url.Action("Single","Products", new {id=item.MaSanPham,TenSanPham_KhongDau=item.TenSanPham_KhongDau,categoryName=item.loaisp.Url})"> @item.TenSanPham</a></h4>
+                        <div class="info-product-price">
+                            <span class="item_price">@item.DonGia.Value.ToString("#,##")</span>
+
+                        </div>
+                        <a class="single-item hvr-outline-out addcart" name="@item.MaSanPham">Thêm giỏ hàng</a>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+    <div class="pagination-grid text-right">
+        <ul class="pagination paging">
+            @Html.PagedListPager(Model, page => Url.Action("Search", new {@q=ViewBag.q, page = page, @srt = ViewBag.srt, @sh = ViewBag.sh }))
+        </ul>
+    </div>
+</div>
+

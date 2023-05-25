@@ -1,0 +1,8 @@
+﻿@using smart_shop.Models;
+@model IEnumerable<loaisp>
+
+<option value="">Tất cả sản phẩm</option>
+@foreach (var item in Model)
+{
+    <option value="@item.MaLoaiSP">@item.TenLoai</option>
+}

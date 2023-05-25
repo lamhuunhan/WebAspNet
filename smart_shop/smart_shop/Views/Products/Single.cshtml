@@ -1,0 +1,370 @@
+﻿@using smart_shop.Models;
+@model sanpham
+@{
+    ViewBag.Title = "Single";
+    Layout = "~/Views/Layout/ProductLayout.cshtml";
+    List<binhluan> bl = (List<binhluan>)ViewBag.lbl;
+    thanhvien tv = Session["login"] as thanhvien;
+}
+
+
+<div class="single">
+    <div class="container">
+        <div class="col-md-6 single-right-left animated wow slideInUp animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: slideInUp;">
+            <div class="grid images_3_of_2">
+                <div class="flexslider">
+                    <!-- FlexSlider -->
+                    <script>
+						// Can also be used with $(document).ready()
+							$(window).load(function() {
+								$('.flexslider').flexslider({
+								animation: "slide",
+								controlNav: "thumbnails"
+								});
+							});
+                    </script>
+                    <!-- //FlexSlider-->
+                    <ul class="slides">
+                        <li data-thumb="@Url.Content("~/Content/images/"+Model.HinhAnh1)" >
+                            <div class="thumb-image"> <img src="@Url.Content("~/Content/images/"+Model.HinhAnh1)" data-imagezoom="true" class="img-responsive"> </div>
+                        </li>
+                        <li data-thumb="@Url.Content("~/Content/images/"+Model.HinhAnh2)">
+                            <div class="thumb-image"> <img src="@Url.Content("~/Content/images/"+Model.HinhAnh2)" data-imagezoom="true" class="img-responsive"> </div>
+                        </li>
+                        <li data-thumb="@Url.Content("~/Content/images/"+Model.HinhAnh3)">
+                            <div class="thumb-image"> <img src="@Url.Content("~/Content/images/"+Model.HinhAnh3)" data-imagezoom="true" class="img-responsive"> </div>
+                        </li>
+                        <li data-thumb="@Url.Content("~/Content/images/"+Model.HinhAnh4)">
+                            <div class="thumb-image"> <img src="@Url.Content("~/Content/images/"+Model.HinhAnh4)" data-imagezoom="true" class="img-responsive"> </div>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 single-right-left simpleCart_shelfItem animated wow slideInRight animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: slideInRight;">
+            <h3>@Model.TenSanPham</h3>
+            <p><span class="item_price">@Model.DonGia.Value.ToString("#,##") VNĐ</span>
+            @*<div class="rating1">
+                <span class="starRating">
+                    <input id="rating5" type="radio" name="rating" value="5">
+                    <label for="rating5">5</label>
+                    <input id="rating4" type="radio" name="rating" value="4">
+                    <label for="rating4">4</label>
+                    <input id="rating3" type="radio" name="rating" value="3" checked="">
+                    <label for="rating3">3</label>
+                    <input id="rating2" type="radio" name="rating" value="2">
+                    <label for="rating2">2</label>
+                    <input id="rating1" type="radio" name="rating" value="1">
+                    <label for="rating1">1</label>
+                </span>
+            </div>*@
+            @*<div class="description">
+                <h5>Check delivery, payment options and charges at your location</h5>
+                <input type="text" value="Enter pincode" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter pincode';}" required="">
+                <input type="submit" value="Check">
+            </div>*@
+            <div class="color-quality">
+                <div class="color-quality-right">
+                    <h5>Số lượng :</h5>
+                    <select id="country1" class="frm-field required sect">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+                <div class="clearfix"> </div>
+            @*<div class="occasional">
+                <h5>Types :</h5>
+                <div class="colr ert">
+                    <label class="radio"><input type="radio" name="radio" checked=""><i></i>Casual Shoes</label>
+                </div>
+                <div class="colr">
+                    <label class="radio"><input type="radio" name="radio"><i></i>Sports Shoes</label>
+                </div>
+                <div class="colr">
+                    <label class="radio"><input type="radio" name="radio"><i></i>Formal Shoes</label>
+                </div>
+                <div class="clearfix"> </div>
+            </div>*@
+            <div class="occasion-cart">
+                <a class="item_add hvr-outline-out button2" id="add_single" style="cursor:pointer">Thêm giỏ hàng</a>
+            </div>
+                <script>
+                    $(document).ready(function () {
+
+                        $('#add_single').click(function () {
+                            //$('#show-hide').slideDown(1000);
+                            sluong = $('#country1').val();
+                            $.ajax({
+                                type: 'GET',
+                                url: '@Url.Action("ThemGioHangSL", "Home")',
+                                data: {
+                                    maSP: @Model.MaSanPham,
+                                    sl: sluong
+                                },
+                                success: function (ketqua) {
+                                    $('#GioHangPartial').html(ketqua);
+                                    toastr.success("Thêm thành công");
+                                }
+
+                            });
+                            //$('#show-hide').slideUp(2000);
+                        });
+
+                    });
+                </script>
+
+        </div>
+        <div class="clearfix"> </div>
+
+        <div class="bootstrap-tab animated wow slideInUp animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: slideInUp;">
+            <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+                <ul id="myTab" class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Mô tả</a></li>
+                    <li role="presentation"><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile">Bình luận (@bl.Count())</a></li>
+                   
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active bootstrap-tab-text" id="home" aria-labelledby="home-tab">
+                        <h5>Thông tin Sản phẩm @Model.TenSanPham</h5>
+                        <p>
+                               @Model.ThongTin
+                        </p>
+                    </div>
+
+
+
+
+                    <div role="tabpanel" class="tab-pane fade bootstrap-tab-text" id="profile" aria-labelledby="profile-tab">
+                        <div class="bootstrap-tab-text-grids" id="loadbinhluan">
+                            @foreach (var item in bl)
+                            {
+                                <div class="bootstrap-tab-text-grid">
+                                    <div class="bootstrap-tab-text-grid-left">
+                                        <img src="~/Content/images/men3.jpg" alt="" class="img-responsive">
+                                    </div>
+                                    <div class="bootstrap-tab-text-grid-right">
+                                        <ul>
+                                            <li><a>@item.TenDangNhap</a> <span> - @item.NgayBinhLuan</span></li>
+                                            <li>
+                                                @if (tv != null )
+                                                {
+                                                    if ( tv.TenDangNhap == item.TenDangNhap)
+                                                    {
+
+                                                    <a>                                                                                                                                                                                 @*  public ActionResult formUpdateBL([Bind(Include ="MaBinhLuan,TenDangNhap,MaSanPham,NgayBinhLuan,NoiDungBinhLuan")] binhluan bl,
+                                                                                                                                                                                                                          DateTime nbl) *@
+                                                        <span class="glyphicon glyphicon-edit chuotpoter editcomment" aria-hidden="true" data-toggle="modal" data-target="#editcomment" data-id="@item.MaBinhLuan" data-value="@item.NoiDungBinhLuan" data-tdn="@item.TenDangNhap" data-masp="@Model.MaSanPham" data-nbl="@item.NgayBinhLuan"></span>
+                                                    </a>
+                                                    <a>
+                                                        @*<span class="glyphicon glyphicon-remove chuotpoter" aria-hidden="true" onclick="xoabinhluan(@item.MaBinhLuan)"></span>*@
+
+
+                                                        
+                                                        <span class="glyphicon glyphicon-remove chuotpoter xoabinhluan"
+                                                              aria-hidden="true"
+                                                              data-toggle="modal"
+                                                              data-target="#deletebinhluan"
+                                                              data-id="@item.MaBinhLuan"
+                                                              ></span>
+                                                    </a>
+
+                                                    }
+                                                }
+                                            </li>
+                                        </ul>
+                                        <p>
+                                           @item.NoiDungBinhLuan
+                                        </p>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                </div>
+                            }
+                        </div>
+
+                            <div class="add-review">
+                                <h4>Thêm bình luận</h4>
+                               
+
+                                    <textarea type="text" placeholder="Nhập nội dung của bạn" id="NoiDungBL"></textarea>
+                                @if (Session["login"] != null)
+                                {
+                                    <input type="submit" value="Gửi" id="addbinhluan">
+                                }
+                                else
+                                {
+                                    <input type="submit" value="Gửi" data-toggle="modal" data-target="#myModal4">
+                                }
+                            </div>
+                        <script>
+                    $(document).ready(function () {
+                        $('#addbinhluan').click(function () {
+                            noidung = $('#NoiDungBL').val();
+                            if(noidung.length >0)
+                            {
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '@Url.Action("ThemBinhLuan", "Home")',
+                                    data: {
+                                        masp: @Model.MaSanPham,
+                                        nd: noidung,
+                                    },
+                                    success: function (ketqua) {
+                                        $('#loadbinhluan').html(ketqua);
+                                    }
+
+                                });
+                            }
+                        });
+                      
+
+                    });
+                            function xoabinhluan(mabl){
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '@Url.Action("XoaBinhLuan", "Home")',
+                                    data: {
+                                        mabluan: mabl,
+                                        masp: @Model.MaSanPham,
+                                    },
+                                    success: function (ketqua) {
+                                        $('#loadbinhluan').html(ketqua);
+                                    }
+
+                                });
+                            }
+                        </script>
+                     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .chuotpoter{cursor:pointer;}
+</style>
+
+<script>
+    $(document).on("click", ".editcomment", function () {
+        var idcomment = $(this).data('id');
+        var noidungcomment = $(this).data('value');
+        var tdn=$(this).data('tdn');
+        var masp = $(this).data('masp');
+        var nbl = $(this).data('nbl');
+        $(".modal-body #NoiDungBLMoi").val(noidungcomment);
+        $(".modal-body #macomment").val(idcomment);
+        $(".modal-body #tendangnhap").val(tdn);
+        $(".modal-body #masp").val(masp);
+        $(".modal-body #ngaybl").val(nbl);
+        // As pointed out in comments,
+        //xoabinhluan
+     // it is superfluous to have to manually call the modal.
+     $('#editcomment').modal('show');
+    });
+   
+</script>
+
+<script>
+    $(document).on("click", ".xoabinhluan", function () {
+        var idcomment = $(this).data('id');
+        $(".modal-body #mabl").val(idcomment);
+    });
+
+</script>
+
+
+
+@* int? mabl,string noidungbt,string tdn,int? masp,DateTime nbl*@
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="editcomment">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Cập nhật bình luận</h4>
+            </div>
+            <div class="modal-body">
+                <div class="add-review">
+                    <input type="hidden" id="macomment"/>
+                    <input type="hidden" id="tendangnhap" />
+                    <input type="hidden" id="masp" />
+                    <input type="hidden" id="ngaybl" />
+                    <textarea type="text" placeholder="Nhập nội dung của bạn" id="NoiDungBLMoi"></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" style="background-color:#FDA30E" id="EditComent">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $('#EditComent').click(function () {
+           
+            MaComment = $('#macomment').val();
+            TenDangNhap = $('#tendangnhap').val();
+            noidung = $('#NoiDungBLMoi').val();
+            NgayBinhLuan = $('#ngaybl').val();
+            if(noidung.length >0)
+            {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("formUpdateBL", "Home")',
+                    data: {
+                        mabl: MaComment,
+                        noidungbt: noidung,
+                        tdn: TenDangNhap,
+                        masp: @Model.MaSanPham,
+                        nbl:NgayBinhLuan
+
+                        },
+                    success: function (ketqua) {
+                        $('#loadbinhluan').html(ketqua);
+                        $('#editcomment').modal('hide');
+                    }
+
+                });
+            }
+        });
+    });
+</script>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" id="deletebinhluan">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabelaaaa">Xóa bình luận</h4>
+            </div>
+           
+                <div class="modal-body">
+                    <div class="add-review">
+                        <p>Bạn có chắc chắn muốn xóa bình luận này không</p>
+                        <input type="hidden" id="mabl" name="idloaisp" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary" id="deletebinhluanct" style="background-color:#FDA30E">Xóa</button>
+                </div>
+            
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $('#deletebinhluanct').click(function(){
+            id = $('#mabl').val();
+            xoabinhluan(id);
+            $('#deletebinhluan').modal('hide');
+        });
+    });
+</script>

@@ -1,0 +1,33 @@
+﻿@using smart_shop.Models;
+@model IEnumerable<binhluan>
+    @{ thanhvien tv = Session["login"] as thanhvien;}
+@foreach (var item in Model)
+{
+    <div class="bootstrap-tab-text-grid">
+        <div class="bootstrap-tab-text-grid-left">
+            <img src="~/Content/images/men3.jpg" alt="" class="img-responsive">
+        </div>
+        <div class="bootstrap-tab-text-grid-right">
+            <ul>
+                <li><a>@item.TenDangNhap</a> <span> - @item.NgayBinhLuan</span></li>
+                <li>
+                    @if (tv.TenDangNhap == item.TenDangNhap)
+                    {
+
+                        <a>
+                            <span class="glyphicon glyphicon-edit chuotpoter editcomment" aria-hidden="true" data-toggle="modal" data-target="#editcomment" data-id="@item.MaBinhLuan" data-value="@item.NoiDungBinhLuan" data-tdn="@item.TenDangNhap" data-masp="@item.MaSanPham" data-nbl="@item.NgayBinhLuan"></span>
+                        </a>
+                        <a>
+                            <span class="glyphicon glyphicon-remove chuotpoter" aria-hidden="true" onclick="xoabinhluan(@item.MaBinhLuan)"></span>
+                        </a>
+
+                    }
+                </li>
+            </ul>
+            <p>
+                @item.NoiDungBinhLuan
+            </p>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+}

@@ -1,0 +1,39 @@
+﻿<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Smart shop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Smart shop -CTK36" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <link href="~/Content/Login/css/style.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Trang Quản trị Smart Shop</h1>
+    </div>
+
+    <div class="mail-form shadow">
+        @using (Html.BeginForm())
+        {
+            <input type="text" placeholder="tài khoản" required autocomplete="off" name="user"/>
+            <input type="password" class="pass" placeholder="mật khẩu" autocomplete="off" required name="pass" />
+            <input type="submit" value="Đăng nhập">
+        }
+    </div>
+
+    <div class="footer">
+        <p>© @DateTime.Now.Year Đăng nhập</p>
+    </div>
+
+</body>
+</html>

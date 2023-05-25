@@ -1,0 +1,229 @@
+﻿@using smart_shop.Models;
+@model IEnumerable<ItemGioHang>
+
+
+
+
+    <table class="timetable_sub">
+        <thead>
+            <tr>
+                <th>Xóa</th>
+                <th>Hình ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+                <th>Giảm giá</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr class="rem1">
+                <td class="invert-closeb">
+                    <div class="rem" style="width:100%">
+                        <button name="@item.MaSP" class="deletecartitem" style="background-color:white;border:none">
+                            <div class="close1" style="margin:0 auto;position: initial !important;"> </div>
+                        </button>
+                        <script>
+    $(document).ready(function () {
+        $('#checkout_thongtin').hide();
+        $('#thanhtoanclick').click(function () {
+            $('#checkout_giohang').slideUp();
+            $('#checkout_thongtin').slideDown();
+        });
+        $('.deletecartitem').click( function () {
+            $.ajax({
+                type: 'Get',
+                url: '@Url.Action("DeleteItemCart","Home")',
+                data: { maSP: this.name },
+                success: function (ketqua) {
+                    $('#checkout_cartor').html(ketqua);
+                }
+            });
+        });
+    });
+                        </script>
+                    </div>
+                </td>
+                <td class="invert-image">
+                    <a href="~/Products/Single/@item.MaSP"><img src="@Url.Content("../../Content/images/" + item.HinhAnh)" alt="" class="img-responsive" /></a>
+                </td>
+                <td class="invert">@item.TenSP</td>
+                <td class="invert">
+                    <div class="quantity">
+                        <div class="quantity-select">
+                            <select class="changeitemcart form-control entry value" name="@item.MaSP" onchange="SuaGioHang(@item.MaSP,$(this).val())">
+                                @for (int i = 1; i <= 6; i++)
+                                {
+                                    if (i == item.SoLuong)
+                                    {
+                                        <option value="@i" selected="selected">@i</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@i">@i</option>
+                                    }
+                                }
+
+                            </select>
+                            <script>
+                                function SuaGioHang(masanpham, soluong) {
+                                    $.ajax({
+                                        type: 'Get',
+                                        url: '@Url.Action("UpdateItemCart","Home")',
+                                        data: {
+                                            maSP: masanpham,
+                                            sl:soluong },
+                                        success: function (ketqua) {
+                                            $('#checkout_cartor').html(ketqua);
+                                        }
+                                    });
+                                }
+                            </script>
+                        </div>
+
+                    </div>
+                </td>
+                <td class="invert">@item.DonGia.Value.ToString("#,##")</td>
+                <td class="invert">@item.GiamGia</td>
+                <td class="invert">@{decimal? t = item.SoLuong * (item.DonGia - (item.DonGia * Convert.ToDecimal( item.GiamGia))); }@t.Value.ToString("#,##")</td>
+
+   </tr>
+                    }
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Tổng</td>
+            <td>@ViewBag.TongTien</td>
+        </tr>
+    </table>
+    @*<script>
+                function SuaGioHang(masanpham, soluong) {
+                    $.ajax({
+                        type: 'Get',
+                        url: '@Url.Action("UpdateItemCart","Home")',
+                        data: {
+                            maSP: masanpham,
+                            sl:soluong },
+                        success: function (ketqua) {
+                            $('#checkout_giohang').html(ketqua);
+                        }
+                    });
+                }
+    </script>*@
+
+@*<div class="checkout-left">
+
+    @*<div class="checkout-right-basket animated wow slideInRight" data-wow-delay=".5s" style="margin: 0em 0 0 0em;">
+            <a href="~/Products"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>Mua hàng tiếp</a>
+        </div>
+    @if (Session["login"] != null)
+            {
+        <div style="float:right">
+            <a class="checkoutrightnext" id="thanhtoanclick">Thanh toán</a>
+        </div>
+    }
+    else
+    {
+        <div style="float:right">
+            <a class="checkoutrightnext" data-toggle="modal" data-target="#myModal4">Thanh toán</a>
+        </div>
+    }
+    <div class="clearfix"> </div>
+</div>*@
+
+
+
+
+
+
+
+
+
+@*<div class="table-responsive checkout-right animated wow slideInUp" data-wow-delay=".5s">
+
+    <table class="timetable_sub">
+        <thead>
+            <tr>
+                <th>Xóa</th>
+                <th>Hình ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr class="rem1">
+                <td class="invert-closeb">
+                    <div class="rem" style="width:100%">
+                        <button name="@item.MaSP" class="deletecartitem" style="background-color:white;border:none">
+                            <div class="close1" style="margin:0 auto;position: initial !important;"> </div>
+                        </button>
+                    </div>
+                </td>
+                <td class="invert-image">
+                    <a href="~/Products/Single/@item.MaSP"><img src="@Url.Content("../../Content/images/" + item.HinhAnh)" alt="" class="img-responsive" /></a>
+                </td>
+                <td class="invert">@item.TenSP</td>
+                <td class="invert">
+                    <div class="quantity">
+                        <div class="quantity-select">
+                            <select class="changeitemcart form-control entry value" name="@item.MaSP" onchange="SuaGioHang(@item.MaSP,$(this).val())">
+                                @for (int i = 1; i <= 6; i++)
+                                {
+                                    if (i == item.SoLuong)
+                                    {
+                                        <option value="@i" selected="selected">@i</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@i">@i</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </td>
+                <td class="invert">@item.DonGia</td>
+                <td class="invert">@{decimal? t = item.SoLuong * item.DonGia; }@t</td>
+            </tr>
+                    }
+    </table>
+</div>
+<div class="checkout-left">
+
+    
+    @if (Session["login"] != null)
+            {
+        <div style="float:right">
+            <a class="checkoutrightnext" id="thanhtoanclick">Thanh toán</a>
+        </div>
+    }
+    else
+    {
+        <div style="float:right">
+            <a class="checkoutrightnext" data-toggle="modal" data-target="#myModal4">Thanh toán</a>
+        </div>
+    }
+    <div class="clearfix"> </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.deletecartitem').click( function () {
+            $.ajax({
+                type: 'Get',
+                url: '@Url.Action("DeleteItemCart","Home")',
+                data: { maSP: this.name },
+                success: function (ketqua) {
+                    $('#checkout_giohang').html(ketqua);
+                }
+            });
+        });
+    });
+</script>*@
+

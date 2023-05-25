@@ -1,0 +1,135 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<smart_shop.Models.sanpham>
+@{
+    ViewBag.Title = "Quản lý sản phẩm";
+    int stt = 1;
+    stt = Model.PageSize * (Model.PageNumber - 1);
+    smart_shop.Models.sanpham sp = new smart_shop.Models.sanpham();
+}
+
+<table class="table-striped table">
+    <tr>
+        <th>
+            #
+        </th>
+        <th>
+            @Html.Label("Tên sản phẩm")
+        </th>
+        <th>
+            @Html.Label("Số lượng")
+        </th>
+        <th>
+            @Html.Label("Hình 1")
+        </th>
+        <th>
+            @Html.Label("Hình 2")
+        </th>
+        <th>
+            @Html.Label("Hình 3")
+        </th>
+        <th>
+            @Html.Label("Hình 4")
+        </th>
+        <th>
+            @Html.Label("Đơn giá")
+        </th>
+        <th>
+            @Html.Label("Thông tin")
+        </th>
+        <th>
+            @Html.Label("M")
+        </th>
+        <th>
+            @Html.Label("F")
+        </th>
+        <th>
+            @Html.Label("Loại")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+
+                @{ stt++;}
+                @stt
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenSanPham)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLuong)
+            </td>
+            <td>
+                <img src="@Url.Content("~/Content/images/"+@item.HinhAnh1)" alt="Alternate Text" width="60" height="68" />
+            </td>
+            <td>
+                <img src="@Url.Content("~/Content/images/"+@item.HinhAnh2)" alt="Alternate Text" width="60" height="68" />
+            </td>
+            <td>
+                <img src="@Url.Content("~/Content/images/"+@item.HinhAnh3)" alt="Alternate Text" width="60" height="68" />
+            </td>
+            <td>
+                <img src="@Url.Content("~/Content/images/"+@item.HinhAnh4)" alt="Alternate Text" width="60" height="68" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DonGia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ThongTin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Man)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Woman)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.loaisp.TenLoai)
+            </td>
+            <td>
+                @*<span class="glyphicon glyphicon-edit" style="cursor:pointer" aria-hidden="true" data-toggle="modal" data-target="#editsanpham"></span>*@
+                @*@Html.ActionLink(" ", "Edit", new { id = item.MaSanPham }, new { @class = "glyphicon glyphicon-edit" }) |*@
+                @*@Html.ActionLink(" ", "Details", new { id=item.MaSanPham }, new { @class = "glyphicon glyphicon-link" }) |*@
+                @*@Html.ActionLink(" ", "Delete", new { id=item.MaSanPham },new { @class = "glyphicon glyphicon-remove" })*@
+                <span class="glyphicon glyphicon-edit edit_sanpham" style="cursor:pointer;color:#337ab7"
+                      aria-hidden="true"
+                      data-toggle="modal"
+                      data-target="#create_and_edit"
+                      data-id="@item.MaSanPham"
+                      data-tensp="@item.TenSanPham"
+                      data-soluong="@item.SoLuong"
+                      data-hinha1="@item.HinhAnh1"
+                      data-hinha2="@item.HinhAnh2"
+                      data-hinha3="@item.HinhAnh3"
+                      data-hinha4="@item.HinhAnh4"
+                      data-dongia="@item.DonGia"
+                      data-thongtin="@item.ThongTin"
+                      data-man="@item.Man"
+                      data-woman="@item.Woman"
+                      data-loaisp="@item.loaisp.TenLoai"></span>
+                <span class="glyphicon glyphicon-remove removesanpham" style="cursor:pointer;color:#337ab7"
+                      aria-hidden="true"
+                      data-toggle="modal"
+                      data-target="#editsanpham"
+                      data-id="@item.MaSanPham"
+                      data-tensp="@item.TenSanPham"></span>
+            </td>
+        </tr>
+                    }
+
+</table>
+<div class="row">
+    <div class="left row">
+        Trang @{int st = Model.PageNumber > Model.PageCount ? 1 : Model.PageNumber; } @st/@Model.PageCount
+    </div>
+    <div class="left row">
+        @Html.PagedListPager(Model, page => Url.Action("Products", new { page = page }))
+    </div>
+</div>
+
+

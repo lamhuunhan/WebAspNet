@@ -1,0 +1,54 @@
+﻿@model IEnumerable<smart_shop.Models.ct_dondat>
+@{
+    ViewBag.Title = "CartDet";
+    Layout = "~/Views/Layout/AdminLayout.cshtml";
+    smart_shop.Models.dondat dt = (smart_shop.Models.dondat)ViewBag.DonDat;
+    int i = 1;
+    decimal? tong = 0;
+}
+
+<h2>Thông tin đơn hàng</h2>
+<p class="row">
+    Tên đăng nhập: @dt.TenDangNhap
+</p>
+<p class="row">
+    Trạng thái: @dt.TrangThai
+</p>
+<p class="row">
+    Địa chỉ giao hàng: @dt.NoiGiao
+</p>
+<p class="row">
+   Ngày đặt hàng: @dt.NgayDat
+</p>
+
+<table class="table-striped table">
+    <tr>
+        <td>#</td>
+        <td>Tên sản phẩm</td>
+        <td>Đơn giá</td>
+        <td>Số lượng</td>
+        <td>Thành tiền</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@i @{i++;}</td>
+            <td>@item.sanpham.TenSanPham</td>
+            <td>@item.sanpham.DonGia</td>
+            <td>@item.SoLuong</td>
+            <td>@{decimal? tt = item.sanpham.DonGia * item.SoLuong; tong += tt; } @tt.Value.ToString("#,##")</td>
+        </tr>
+                }
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Tổng</td>
+        <td>@tong.Value.ToString("#,##")</td>
+    </tr>
+</table>
+
+<div>
+    @Html.ActionLink("Quay về", "Cart")
+</div>
+

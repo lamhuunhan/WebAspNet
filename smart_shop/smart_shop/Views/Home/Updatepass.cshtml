@@ -1,0 +1,63 @@
+﻿@model smart_shop.Models.thanhvien
+@{  string url = Request.Url.PathAndQuery;}
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cập nhập mật khẩu</h4>
+            </div>
+                <div class="col-md-12" style="margin:10px 0">
+                    <span style="margin:5px">Mật khẩu cũ</span>
+                    @Html.Password("Pass", "", htmlAttributes: new { @placeholder = "Nhập mật khẩu cũ", @class = "form-control" })
+                </div>
+                <div class="col-md-12" style="margin:10px 0">
+                    <span style="margin:5px">Mật khẩu mới</span>
+                    @Html.Password("NewPass", "", htmlAttributes: new { @placeholder = "Nhập mật khẩu mới", @class = "form-control" })
+                </div>
+                <div class="col-md-12" style="margin:10px 0">
+                    <span style="margin:5px">Nhập lại mật khẩu</span>
+                    @Html.Password("ReNewPass", "", htmlAttributes: new { @placeholder = "Nhập lại mật khẩu cũ", @class = "form-control" })
+                </div>
+                <input type="hidden" value="@Model.TenDangNhap" id="UsernewPasss" />
+                         <input type="hidden" value="@url" name="url"/>
+            <div class="modal-footer" style="border-top: 0px solid #e5e5e5;">
+                <p style="color:red;text-align:center" id="errpass"></p>
+                <input type="submit" class="btn btn-default" value="Cập nhập" id="pwUpdate"/>
+            </div>
+                   <script>
+                       $(document).ready(function () {
+                           $('#pwUpdate').click(function () {
+                               passwprdold = $('#Pass').val();
+                               passnew = $('#NewPass').val();
+                               renewpass = $('#ReNewPass').val();
+                               useruppass = $('#UsernewPasss').val();
+                               loiup=0;
+                               if (passnew != renewpass) {
+                                   loiup++;
+                                   $('#errpass').text("Mật khẩu không trùng khớp");
+                               }
+                               if (loiup==0) {
+                                   $.ajax({
+                                       type: 'Get',
+                                       url: '@Url.Action("UpdatePassWord","Home")',
+                                       data: {
+                                           User: useruppass,
+                                           Pass: passwprdold,
+                                           NewPass: passnew
+                                       },
+                                       success: function (ketqua) {
+                                           if (ketqua == "ok")
+                                               window.location.reload();
+                                           else
+                                               $('#errpass').text(ketqua);
+                                       }
+                                   })
+                               }
+                           });
+                       });
+                   </script>
+        </div>
+    </div>
+</div>
